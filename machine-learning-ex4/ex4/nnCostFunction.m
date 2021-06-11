@@ -62,35 +62,57 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+
+% Forward Propogation 3layer NN Input, Hidden, Output
+% Input layer
 a1 = [ones(size(X,1),1) X];
+
+% Hidden layer
 z2 = a1 * Theta1';
 a2 = sigmoid(z2);
 a2 = [ones(size(a2,1),1), a2];
+
+% Output Layer
 z3 = a2*Theta2';
 a3 = sigmoid(z3);
+
+% Convert the y (mx1) vector into a (mxr) matrix r = # of outputs (num_labels)
 y_matrix = eye(num_labels)(y,:);
 
+% Compute the J(theta) cost unregularized
 J = (1/m) * sum(sum((-y_matrix)' .* log(a3)' - (1-y_matrix)' .* log(1-a3)'));
+
+% Compute the regularization scalar on its own
 reg = (lambda / (2*m)) * (sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)));
 
+% Combine the Cost and regularization for J(theta)
 J = J + reg;
 
 
-
+% Backpropagation
+% Output layer d3
 d3 = a3 - y_matrix;
+
+% Hidden Layer d2, this is the last delta as we do not need to compute it for the input layer
 d2 = (d3 * Theta2(:,2:end)) .* sigmoidGradient(z2);
+
+% Large deltas computed 
 delta1 = d2'*a1;
 delta2 = d3'*a2;
 
+% Theta grad checks scaled by (1/m). These are unregularized
 Theta1_grad = (1/m) * delta1;
 Theta2_grad = (1/m) * delta2;
 
+% Change the first column of the Thetas. This is so the bias term of theta doesnt interfere with the regularization
 Theta1(:,1) = 0;
 Theta2(:,1) = 0;
 
+% Multiply element wise the Thetas by (lambda/m) to scale them.
 Theta1 = (lambda/m) .* Theta1;
 Theta2 = (lambda/m) .* Theta2;
 
+% Add the regularized Thetas to the unregularized theta_grads
 Theta1_grad = Theta1_grad + Theta1;
 Theta2_grad = Theta2_grad + Theta2;
 
