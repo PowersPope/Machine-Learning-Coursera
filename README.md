@@ -5,6 +5,8 @@ You can find the Coursera course here: https://www.coursera.org/learn/machine-le
 
 I think this is a great primer for learning about Machine Learning.
 
+All of the code was written for Octave 3.8.0 and not Matlab.
+
 Please do not just copy my solutions, if you need help look mine over and see how I figured mine out.
 I would honestly advise you to look up the Resources page before looking at my solutions. They will explain how to do the homework, you just have to fill in the code. 
 
